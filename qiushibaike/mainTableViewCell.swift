@@ -7,27 +7,26 @@
 //
 
 import UIKit
+import Alamofire
 
 class mainTableViewCell: UITableViewCell {
     
+    var mainView:UIView?
     var imageURL:String?
     var photoimage:UIImageView!
-
+        @IBOutlet weak var bottomView: UIView!
     //@IBOutlet weak var pictureTopConstraint: NSLayoutConstraint!
-    //@IBOutlet weak var bottomViewVonatraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomViewVonatraint: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
         photoimage = self.viewWithTag(104) as! UIImageView
         
-        var imageTapGuesture = UITapGestureRecognizer(target: self, action: "imageViewTapped")
+        let imageTapGuesture = UITapGestureRecognizer(target: self, action: "imageViewTapped")
         self.photoimage.userInteractionEnabled = true
         self.photoimage.addGestureRecognizer(imageTapGuesture)
         self.photoimage.hidden = true
-        //var rect1:CGRect = CGRectMake(0, 0, 0, 0)
-        //self.photoimage.frame = rect1
-
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -36,10 +35,20 @@ class mainTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    
     func imageViewTapped() {
         //var vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("mainViewController") as! UIViewController
         //vc.hidesBottomBarWhenPushed = true
-        NSNotificationCenter.defaultCenter().postNotificationName("imageViewTapped", object:self.imageURL!)
+       let photoPoint = self.photoimage.convertPoint(CGPointZero, toView: self.mainView!)
+       // var airports: [String: String] = ["YYZ": "Toronto Pearson", "DUB": "Dublin"]
+
+        var dictionary: [String: String] = [String: String]() //= ["imageUrl": self.imageURL, "photoPoint": photoPoint]
+        dictionary["imageUrl"] = self.imageURL
+        dictionary["photoPointX"] = String( photoPoint.x )
+        dictionary["photoPointY"] = String( photoPoint.y )
+
+        NSNotificationCenter.defaultCenter().postNotificationName("imageViewTapped", object:dictionary)
+        
      
     }
 }

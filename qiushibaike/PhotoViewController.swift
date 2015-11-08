@@ -32,7 +32,7 @@ class PhotoViewController: UIViewController,UIScrollViewDelegate{
         self.view.addSubview(view)
 */
         self.scrollView.delegate = self
-       self.scrollView.addSubview(imageview)
+       //self.scrollView.addSubview(imageview)
         self.scrollView.minimumZoomScale = 1
         self.scrollView.maximumZoomScale = 3
         
@@ -49,7 +49,7 @@ class PhotoViewController: UIViewController,UIScrollViewDelegate{
         
         navigationItem.title = "图片"
         
-        var doubleTapGuesture = UITapGestureRecognizer(target: self, action: "doubleTapped:")
+        let doubleTapGuesture = UITapGestureRecognizer(target: self, action: "doubleTapped:")
         doubleTapGuesture.numberOfTapsRequired = 2
         self.scrollView.addGestureRecognizer(doubleTapGuesture)
         
@@ -69,7 +69,7 @@ class PhotoViewController: UIViewController,UIScrollViewDelegate{
     
     func doubleTapped(sender:UITapGestureRecognizer) {
         if self.scrollView.zoomScale == 1 {
-            var point = sender.locationInView(self.view)
+            let point = sender.locationInView(self.view)
             self.scrollView.zoomToRect(CGRectMake(point.x - 50, point.y - 50, 100, 100), animated: true)
         }
         else {

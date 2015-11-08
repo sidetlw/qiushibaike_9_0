@@ -15,7 +15,7 @@ class CommentsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     var jokeID:Int!
     var page:Int = 1
     var dataArray:Array<Dictionary<String,AnyObject>> = []
-    var heightOfIndexpath = [CGFloat](count: 100, repeatedValue: 0)
+    var heightOfIndexpath = [CGFloat](count: 100, repeatedValue: 0.0)
     
     @IBOutlet weak var commentsTableView: UITableView!
     override func viewDidLoad() {
@@ -35,7 +35,7 @@ class CommentsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 80 + heightOfIndexpath[indexPath.row]
+        return CGFloat( 80.0 + heightOfIndexpath[indexPath.row] )
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,10 +43,8 @@ class CommentsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         return !(dataArray.isEmpty) ? dataArray.count:0
     }
     
-    
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("commentTableCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("commentTableCell", forIndexPath: indexPath) 
         
         var avatarimage = cell.viewWithTag(201) as! UIImageView
         var nikeLabel = cell.viewWithTag(202) as! UILabel
@@ -62,7 +60,7 @@ class CommentsViewController: UIViewController,UITableViewDelegate,UITableViewDa
             if let testid = user["id"] as? Int {
                 var id = String( stringInterpolationSegment: testid )
                 if !(id.isEmpty) {
-                    var preId = id.substringToIndex(advance(id.startIndex, count(id) - 4))
+                    var preId = id.substringToIndex(id.startIndex.advancedBy(id.characters.count - 4))
                     var userImageURL = "http://pic.qiushibaike.com/system/avtnew/\(preId)/\(id)/medium/\((userIcon)!)"
                     Alamofire.request(.GET, userImageURL).response(){ (_,_,data,error) in
                         if let image = UIImage(data: data!) {
@@ -81,19 +79,16 @@ class CommentsViewController: UIViewController,UITableViewDelegate,UITableViewDa
             
             var floor = dictionary["floor"] as! Int
             floorLabel.text = "\(floor)楼"
-
-        
         }
-        
         return cell
     }
     
     func dateStringFromTimestamp(timeStamp:Int)->String
     {
-        var ts = Double( timeStamp )
-        var  formatter = NSDateFormatter ()
+        let ts = Double( timeStamp )
+        let  formatter = NSDateFormatter ()
         formatter.dateFormat = "yyyy年MM月dd日 HH:MM:ss"
-        var date = NSDate(timeIntervalSince1970 : ts)
+        let date = NSDate(timeIntervalSince1970 : ts)
         return  formatter.stringFromDate(date)
         
     }
@@ -103,18 +98,30 @@ class CommentsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     {
         var URL = "http://m2.qiushibaike.com/article/\(self.jokeID)/comments?count=20&page=\(self.page)"
        // dataArray = nil
-        Alamofire.request(.GET, URL).responseJSON(){ (_, _, json, error) in
+        Alamofire.request(.GET, URL).responseJSON { response -> Void in
+            if response.result.error == nil {
+                self.updateUI(JSON(response.result.value!))
+                self.page++
+            }
+            else{
+                print("ERROR: " + (response.result.error?.localizedDescription)!)
+            }
+        }
+    }
+        /*
+        Alamofire.request(.GET, URL).responseJSON(){ (json, error) in
             if error == nil {
                 //println(json!)
                 self.updateUI(JSON(json!))
                 self.page++
             }
             else {
-                println("ERROR: " + error!.localizedDescription)
+                print("ERROR: " + error!.localizedDescription)
             }
         }
+*/
 
-    }
+    
     
     func updateUI(jsonStr:JSON) {
         if let arr = jsonStr["items"].arrayObject {
