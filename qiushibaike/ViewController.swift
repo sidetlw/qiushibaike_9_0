@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate ,UIScrollViewDelegate{
     
     @IBOutlet weak var mainTableView: UITableView!
     @IBOutlet weak var freshButton: UIButton!
@@ -29,6 +29,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var animateimageView:UIView!
     var tempx:Int!
     var tempy:Int!
+    var imageViewInScorollView:UIImageView!
     
     @IBOutlet var testimage: UIImageView!
 
@@ -310,9 +311,14 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         
         animateimageView.frame = CGRect(x: tempx , y: tempy , width: 181, height: 162)
-        var imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: animateimageView.bounds.width, height: animateimageView.bounds.height))
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
-        self.animateimageView.addSubview(imageView)
+        var scorllView:UIScrollView = UIScrollView(frame: self.animateimageView.bounds)
+        self.imageViewInScorollView = UIImageView(frame: CGRect(x: 0, y: 0, width: scorllView.bounds.width, height: scorllView.bounds.height))
+        self.imageViewInScorollView.contentMode = UIViewContentMode.ScaleAspectFit
+        scorllView.addSubview(self.imageViewInScorollView)
+        scorllView.minimumZoomScale = 0.5
+        scorllView.maximumZoomScale = 3
+        scorllView.delegate = self
+        self.animateimageView.addSubview(scorllView)
         
         var label = UILabel(frame: CGRect(x: 0, y: self.view.bounds.height / 2 + 10, width: self.view.bounds.width, height: 12))
         label.textAlignment = NSTextAlignment.Center
@@ -323,15 +329,15 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         Alamofire.request(.GET, self.largeImageURL).response(){ (_,_,data,error) in
             if let image = UIImage(data: data!) {
-                imageView.image = image
+                self.imageViewInScorollView.image = image
                 label.removeFromSuperview()
             }
         }
 
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.animateimageView.frame = CGRect(x: 8, y: self.view.bounds.height / 2 - 250, width: self.view.bounds.width - 16, height: 500)
-            
-            imageView.frame = CGRect(x: 0, y: 0, width: self.animateimageView.bounds.width, height: self.animateimageView.bounds.height)
+            scorllView.frame = self.animateimageView.bounds
+            self.imageViewInScorollView.frame = CGRect(x: 0, y: 0, width: self.animateimageView.bounds.width, height: self.animateimageView.bounds.height)
             }, completion: nil)
         
         
@@ -353,12 +359,18 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.animateimageView.frame = CGRect(x: self.tempx , y: self.tempy , width: 181, height: 162)
             self.animateimageView.subviews[0].frame = CGRect(x: 0, y: 0, width: self.animateimageView.bounds.width, height: self.animateimageView.bounds.height)
+            self.imageViewInScorollView.frame = self.animateimageView.subviews[0].bounds
             }) { (_) -> Void in
                 self.animateimageView.removeFromSuperview()
 
         }
     }
     
+    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+        return self.imageViewInScorollView
+        
+    }
+
     
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
