@@ -23,7 +23,7 @@ class CommentsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
         commentsTableView.dataSource = self
         commentsTableView.delegate = self
-        
+        commentsTableView.estimatedRowHeight = 44;
         loadData()
 
         // Do any additional setup after loading the view.

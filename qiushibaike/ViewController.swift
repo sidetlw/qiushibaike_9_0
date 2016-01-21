@@ -22,7 +22,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     var largeImageURL:String = ""
     var largeImageURLArry = [String]()
     var jokeid:Int!
-    var labelHeightOfIndex = [CGFloat](count: 25, repeatedValue: 0)
+    var labelHeightOfIndex = [CGFloat](count: 25, repeatedValue: 0.0)
     var imageHeightOfIndex = [CGFloat](count: 25, repeatedValue: 180.0)
     var startIndex = 0
     var blackImageView:UIView!
@@ -48,7 +48,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         //imageHeightOfIndex.reserveCapacity(100)
        // imageHeightOfIndex = [CGFloat](count: 100, repeatedValue: 0.0)
-        
+        self.mainTableView.estimatedRowHeight = 200
         loadTableViewData()
     }
 
@@ -56,7 +56,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+        
     override func viewWillDisappear(animated: Bool)
     {
         super.viewWillDisappear(animated)
@@ -77,12 +77,13 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     
    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let dictionary:Dictionary<String,AnyObject> = dataArray[indexPath.row]
-        if let _ =  dictionary["image"] as? String {
-            return 43 + 5 + self.labelHeightOfIndex[indexPath.row] + 8 + 180 + 8 + 33
-        }
-        else {
-            return self.labelHeightOfIndex[indexPath.row ] + 90
+//        let dictionary:Dictionary<String,AnyObject> = dataArray[indexPath.row]
+//        if let _ =  dictionary["image"] as? String {
+    if (self.largeImageURLArry[indexPath.row] != "") {
+        return 43.0 + 5.0 + self.labelHeightOfIndex[indexPath.row] + 8.0 + 180.0 + 8.0 + 33.0
+    }
+    else {
+        return self.labelHeightOfIndex[indexPath.row ] + 90.0
     }
     }
 
@@ -245,6 +246,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 print("ERROR: " +  response.result.error!.localizedDescription)
             }
         }
+        self.mainTableView.reloadData()
     }
     
     func updateUI(jsonStr:JSON) {
@@ -254,8 +256,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 dataArray.append( data as Dictionary<String,AnyObject> )
             }
         updateArrayCapatity(dataArray.count)
-        mainTableView.reloadData()
         }
+       self.mainTableView.reloadData()
     }
     
     func updateArrayCapatity(num:Int) {
@@ -303,7 +305,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.view.addSubview(animateimageView)
         
         let bigPhotoGesture = UITapGestureRecognizer(target: self, action: "bigPhotoGestureTapped")
-        let bigPhotoGesture1 = UITapGestureRecognizer(target: self, action: "bigPhotoGestureTapped")
+        let bigPhotoGesture1 = UITapGestureRecognizer(target: self, action: "bigPhotoGesture1")
 
         self.animateimageView.addGestureRecognizer(bigPhotoGesture1)
         self.blackImageView.addGestureRecognizer(bigPhotoGesture)
@@ -315,8 +317,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         self.imageViewInScorollView = UIImageView(frame: CGRect(x: 0, y: 0, width: scorllView.bounds.width, height: scorllView.bounds.height))
         self.imageViewInScorollView.contentMode = UIViewContentMode.ScaleAspectFit
         scorllView.addSubview(self.imageViewInScorollView)
-        scorllView.minimumZoomScale = 0.5
-        scorllView.maximumZoomScale = 3
+        scorllView.minimumZoomScale = 1
+        scorllView.maximumZoomScale = 2
         scorllView.delegate = self
         self.animateimageView.addSubview(scorllView)
         
@@ -324,7 +326,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         label.textAlignment = NSTextAlignment.Center
         label.textColor = UIColor.whiteColor()
         label.text = "加载中..."
-        self.view.addSubview(label)
+        self.animateimageView.addSubview(label)
+
         
         
         Alamofire.request(.GET, self.largeImageURL).response(){ (_,_,data,error) in
@@ -338,8 +341,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             self.animateimageView.frame = CGRect(x: 8, y: self.view.bounds.height / 2 - 250, width: self.view.bounds.width - 16, height: 500)
             scorllView.frame = self.animateimageView.bounds
             self.imageViewInScorollView.frame = CGRect(x: 0, y: 0, width: self.animateimageView.bounds.width, height: self.animateimageView.bounds.height)
-            }, completion: nil)
-        
+            }, completion:nil
+        )
         
     }
     
@@ -351,19 +354,25 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         UIView.animateWithDuration(0.5, animations: { () -> Void in
             self.blackImageView.backgroundColor = UIColor.clearColor()
-            }) { (_) -> Void in
-                self.blackImageView.removeFromSuperview()
-        }
-        
-        
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            
             self.animateimageView.frame = CGRect(x: self.tempx , y: self.tempy , width: 181, height: 162)
             self.animateimageView.subviews[0].frame = CGRect(x: 0, y: 0, width: self.animateimageView.bounds.width, height: self.animateimageView.bounds.height)
             self.imageViewInScorollView.frame = self.animateimageView.subviews[0].bounds
-            }) { (_) -> Void in
-                self.animateimageView.removeFromSuperview()
 
+            }) { (_) -> Void in
+                self.blackImageView.removeFromSuperview()
+                self.animateimageView.removeFromSuperview()
         }
+        
+        
+//        UIView.animateWithDuration(0.5, animations: { () -> Void in
+//            self.animateimageView.frame = CGRect(x: self.tempx , y: self.tempy , width: 181, height: 162)
+//            self.animateimageView.subviews[0].frame = CGRect(x: 0, y: 0, width: self.animateimageView.bounds.width, height: self.animateimageView.bounds.height)
+//            self.imageViewInScorollView.frame = self.animateimageView.subviews[0].bounds
+//            }) { (_) -> Void in
+//                self.animateimageView.removeFromSuperview()
+//
+//        }
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {

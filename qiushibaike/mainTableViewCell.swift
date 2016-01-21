@@ -14,7 +14,7 @@ class mainTableViewCell: UITableViewCell {
     var mainView:UIView?
     var imageURL:String?
     var photoimage:UIImageView!
-        @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var bottomView: UIView!
     //@IBOutlet weak var pictureTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomViewVonatraint: NSLayoutConstraint!
     override func awakeFromNib() {

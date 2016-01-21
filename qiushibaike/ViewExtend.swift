@@ -14,14 +14,14 @@ extension UIImageView {
 
 extension UILabel {
     func requiredHeight() -> CGFloat {
-        let label:UILabel = UILabel(frame:CGRectMake(0,0,self.frame.width,CGFloat.max))
+        let label:UILabel = UILabel(frame:CGRectMake(0,0,self.bounds.size.width,CGFloat.max))
         label.numberOfLines = 0
-        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+        label.lineBreakMode = NSLineBreakMode.ByCharWrapping
         label.font = self.font
         label.text = self.text
         
         label.sizeToFit()
         
-        return label.frame.height
+        return label.bounds.size.height
     }
 }
