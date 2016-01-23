@@ -15,7 +15,9 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     @IBOutlet weak var mainTableView: UITableView!
     @IBOutlet weak var freshButton: UIButton!
     @IBOutlet weak var indicator: UIActivityIndicatorView!
-        
+    
+    var popAnimationVC:PopAnimationViewController?
+    
     var imageURL:String = ""
     var page:Int = 1
     var dataArray:Array<Dictionary<String,AnyObject>> = []
@@ -49,6 +51,11 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //imageHeightOfIndex.reserveCapacity(100)
        // imageHeightOfIndex = [CGFloat](count: 100, repeatedValue: 0.0)
         self.mainTableView.estimatedRowHeight = 200
+        
+        let nav = self.navigationController
+        self.popAnimationVC = PopAnimationViewController(navigationController: nav);
+        
+        
         loadTableViewData()
     }
 
