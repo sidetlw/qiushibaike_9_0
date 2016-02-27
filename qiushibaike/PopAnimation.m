@@ -23,13 +23,20 @@
 {
     UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    CGRect tabBarFrame = toVC.tabBarController.tabBar.frame;
+    CGRect temptabBarFrame = toVC.tabBarController.tabBar.frame;
+    tabBarFrame.origin.x -= 50;
+    toVC.tabBarController.tabBar.frame = tabBarFrame;
+   // [toVC.tabBarController.tabBar setHidden:YES];
+    
     
     UIView *container = [transitionContext containerView];
+    //[container addSubview:toVC.tabBarController.tabBar];
     [container insertSubview:toVC.view belowSubview:fromVC.view];
     
     CGRect tempframe = toVC.view.frame;
     CGRect frame = toVC.view.frame;
-    frame.origin.x -= 300.0;
+    frame.origin.x -= 300;
     toVC.view.frame = frame;
     
     NSTimeInterval duration = [self transitionDuration:transitionContext];
@@ -69,13 +76,12 @@
         
         fromVC.view.transform = CGAffineTransformMakeTranslation([[UIScreen mainScreen] bounds].size.width, 0);
         toVC.view.frame = tempframe;
-
+       //
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:!([transitionContext transitionWasCancelled])];
          toVC.view.frame = tempframe;
+         [toVC.tabBarController.tabBar setHidden:NO];
     }];
-    
-    
 }
 
 - (void)animationDidStop:(CATransition *)anim finished:(BOOL)flag {

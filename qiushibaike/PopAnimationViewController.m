@@ -44,7 +44,7 @@
 {
     CGPoint transpoint = [gesture translationInView:self.view];
     CGPoint point = [gesture locationInView:nil];
-    NSLog(@"translationInView :%f  %f  locationInView:,%f  %f",transpoint.x,transpoint.y,point.x,point.y);
+   // NSLog(@"translationInView :%f  %f  locationInView:,%f  %f",transpoint.x,transpoint.y,point.x,point.y);
     CGFloat process = transpoint.x / self.view.bounds.size.width;
     process = MIN( MAX(0.0, process),1.0);
     

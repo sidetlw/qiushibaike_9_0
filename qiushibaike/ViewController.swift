@@ -82,17 +82,22 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         
     }
     
+//    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        return 200.0
+//    }
     
-   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        let dictionary:Dictionary<String,AnyObject> = dataArray[indexPath.row]
-//        if let _ =  dictionary["image"] as? String {
-    if (self.largeImageURLArry[indexPath.row] != "") {
-        return 43.0 + 5.0 + self.labelHeightOfIndex[indexPath.row] + 8.0 + 180.0 + 8.0 + 33.0
-    }
-    else {
-        return self.labelHeightOfIndex[indexPath.row ] + 90.0
-    }
-    }
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let height:CGFloat
+        if (self.largeImageURLArry[indexPath.row] != "") {
+            height = 43.0 + 5.0 + self.labelHeightOfIndex[indexPath.row] + 8.0 + 180.0 + 8.0 + 33.0
+        }
+        else {
+           height = self.labelHeightOfIndex[indexPath.row ] + 90.0
+        }
+        print("height = \(height) row = \(indexPath.row)")
+        return height
+        
+        }
 
 
     
@@ -155,7 +160,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         var nikeLabel = cell.viewWithTag(102) as! UILabel
         var contendLabel = cell.viewWithTag(103) as! UILabel
         //var photoimage = cell.viewWithTag(104) as! UIImageView
-        var commentsLabel = cell.viewWithTag(105) as! UILabel
+        var commentsLabel = cell.viewWithTag(115) as! UILabel
         
         var commentsTapGuesture = UITapGestureRecognizer(target: self, action: "commentsLabelTapped")
         commentsLabel.userInteractionEnabled = true
@@ -253,10 +258,11 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 print("ERROR: " +  response.result.error!.localizedDescription)
             }
         }
-        self.mainTableView.reloadData()
+        //self.mainTableView.reloadData()
     }
     
     func updateUI(jsonStr:JSON) {
+        let arryCountBeforeUpdate:Int = dataArray.count
         if let arr = jsonStr["items"].arrayObject {
             let arr1 = arr as! Array<Dictionary<String,AnyObject>>
             for data in arr1 {
@@ -264,7 +270,25 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             }
         updateArrayCapatity(dataArray.count)
         }
-       self.mainTableView.reloadData()
+        let arryCountAfterUpdate:Int = dataArray.count;
+        var indexPathsArry:[NSIndexPath] = [NSIndexPath]()
+        for (var i:Int = arryCountBeforeUpdate;i < arryCountAfterUpdate ;i++)
+        {
+
+            let indexPath:NSIndexPath = NSIndexPath.init(forRow: Int( i ), inSection: 0);
+            print("Row: \(indexPath.row), Section: \(indexPath.section)")
+            indexPathsArry.append(indexPath)
+        }
+        //self.mainTableView.reloadRowsAtIndexPaths(indexPathsArry, withRowAnimation: UITableViewRowAnimation.Automatic)
+        if (self.page == 1)
+        {
+            self.mainTableView.reloadData();
+        }
+        else
+        {
+             self.mainTableView.insertRowsAtIndexPaths(indexPathsArry, withRowAnimation: UITableViewRowAnimation.None)
+        }
+       
     }
     
     func updateArrayCapatity(num:Int) {

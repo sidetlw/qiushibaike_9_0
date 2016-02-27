@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AD197E12EFB72251755224F0 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72249F77F99C92B3C8B8BB4A /* Pods.framework */; };
+		F16456F01C579E9A00F94DDA /* testTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16456EF1C579E9A00F94DDA /* testTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		F1670FCB1B903B08000769CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1670FCA1B903B08000769CA /* AppDelegate.swift */; };
 		F1670FCD1B903B08000769CA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1670FCC1B903B08000769CA /* ViewController.swift */; };
 		F1670FD01B903B08000769CA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F1670FCE1B903B08000769CA /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		0D9D538B661F232060F1DEC2 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		72249F77F99C92B3C8B8BB4A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D0BC24508576D910A04A0A5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		F16456EF1C579E9A00F94DDA /* testTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testTableViewController.swift; sourceTree = "<group>"; };
 		F1670FC51B903B08000769CA /* qiushibaike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qiushibaike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1670FC91B903B08000769CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F1670FCA1B903B08000769CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				F1670FF11B905A76000769CA /* CommentsViewController.swift */,
 				F1670FF31B95CF58000769CA /* ViewExtend.swift */,
 				F176392F1B95DF6B00C6614E /* mainTableViewCell.swift */,
+				F16456EF1C579E9A00F94DDA /* testTableViewController.swift */,
 			);
 			path = qiushibaike;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				F1DEEA841C53BFE800F968D5 /* PopAnimationViewController.m in Sources */,
 				F1670FF41B95CF59000769CA /* ViewExtend.swift in Sources */,
 				F1670FF01B905A50000769CA /* PhotoViewController.swift in Sources */,
+				F16456F01C579E9A00F94DDA /* testTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

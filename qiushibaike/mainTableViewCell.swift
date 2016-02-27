@@ -51,4 +51,20 @@ class mainTableViewCell: UITableViewCell {
         
      
     }
+    
+//    override func sizeThatFits(size: CGSize) -> CGSize {
+//        var height:CGFloat = 0.0;
+//        let avatarimage = self.viewWithTag(101) as! UIImageView
+//        let nikeLabel = self.viewWithTag(102) as! UILabel
+//        let contendLabel = self.viewWithTag(103) as! UILabel
+//        let commentsLabel = self.viewWithTag(115) as! UILabel
+//        height += avatarimage.sizeThatFits(size).height;
+//        height += nikeLabel.sizeThatFits(size).height;
+//        height += contendLabel.sizeThatFits(size).height
+       // height += self.photoimage.sizeThatFits(size).height
+//        height += commentsLabel.sizeThatFits(size).height
+//        height += self.bottomView.sizeThatFits(size).height
+
+//        return CGSizeMake(size.width, height);
+//    }
 }
